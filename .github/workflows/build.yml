@@ -10,8 +10,9 @@ env:
   ACCESS_TOKEN: ${{ secrets.MB_ACCESS_TOKEN }}
   ORG_ID: ${{ vars.ORG_ID }}
   ORG_NAME: ${{ vars.ORG_NAME }}
-  TEAM_NAME: ${{ vars.TEAM_NAME }}
+  MB_BASE_URL: ${{ vars.MB_BASE_URL}}
   NUMBER_OF_MEMBERS: ${{ vars.NUMBER_OF_MEMBERS }}
+  TEAM_NAME: ${{ vars.TEAM_NAME }}
 
 jobs:
   pkg-and-docs:

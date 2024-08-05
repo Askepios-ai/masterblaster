@@ -35,34 +35,8 @@ masterblaster_organisation = {
             "addedAt": "2000-01-01T00:00:00.00+00:00",
             "invitedAt": None,
         },
-        {
-            "player": {
-                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                "nickName": "name",
-                "avatarUrl": "",
-                "registered": "2000-01-01T00:00:00.00+00:00",
-                "isProfileComplete": True,
-                "gameAccounts": [
-                    {
-                        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                        "nick": "name",
-                        "avatarUrl": "",
-                        "gameId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                        "isConnected": True,
-                        "connectedAt": "2000-01-01T00:00:00.00+00:00",
-                    }
-                ],
-            },
-            "email": "email@email.com",
-            "name": "name",
-            "playerId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            "role": 5,
-            "addedAt": "2000-01-01T00:00:00.00+00:00",
-            "invitedAt": None,
-        },
     ],
-    "images": [
-    ],
+    "images": [],
 }
 
 
@@ -152,9 +126,9 @@ async def test_get_images():
     )
     org = Organisation(**masterblaster_organisation)
     org.session = aiohttp.ClientSession(headers=header)
-    assert len([image.id for image in await org.get_images()]) == len([
-        image["imageId"] for image in expected
-    ])
+    assert len([image.id for image in await org.get_images()]) == len(
+        [image["imageId"] for image in expected]
+    )
     assert [image.original_id for image in await org.get_images()] == [
         image["originalImageId"] for image in expected
     ]
