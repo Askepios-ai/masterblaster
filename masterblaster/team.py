@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import aiohttp
 from typing import Optional
 from datetime import datetime
@@ -57,7 +58,7 @@ class Team:
         Schedule
         """
         r = await self.session.get(
-            f"{BASE}/match_schedule/player?includeFinished=false"
+            f"{os.getenv('MB_BASE_URL')}/match_schedule/player?includeFinished=false"
         )
         match r.status:
             case 200:

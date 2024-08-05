@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import aiohttp
 from .team import Team
 from .member import Member
@@ -42,7 +43,7 @@ class Organisation:
         members: list[Member]
             A list of all members in the organization
         """
-        r = await self.session.get(f"{BASE}/organization/{self.id}")
+        r = await self.session.get(f"{os.getenv('MB_BASE_URL')}/organization/{self.id}")
         match r.status:
             case 200:
                 members = await r.json()
@@ -65,7 +66,9 @@ class Organisation:
         teams: list[Team]
             A list of all teams in the organization
         """
-        r = await self.session.get(f"{BASE}/organization/{self.id}/teams")
+        r = await self.session.get(
+            f"{os.getenv('MB_BASE_URL')}/organization/{self.id}/teams"
+        )
         match r.status:
             case 200:
                 teams = await r.json()
@@ -88,7 +91,7 @@ class Organisation:
         images: list[Image]
             A list of all images in the organization
         """
-        r = await self.session.get(f"{BASE}/organization/{self.id}")
+        r = await self.session.get(f"{os.getenv('MB_BASE_URL')}/organization/{self.id}")
         match r.status:
             case 200:
                 images = await r.json()

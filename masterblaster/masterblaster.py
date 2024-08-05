@@ -1,3 +1,4 @@
+import os
 import aiohttp
 import logging
 from .headers import Header
@@ -5,7 +6,6 @@ from .organisation import Organisation
 from .member import Member
 from typing import Any, Optional
 
-BASE = "https://app.masterblaster.gg/api"
 
 __all__ = [
     "MasterBlaster",
@@ -83,6 +83,7 @@ class MasterBlaster:
         """
         if self._session and not self._session.closed:
             await self._session.close()
+        assert self.access_token is not None, "Missing Masterblaster access token"
         self.headers = (
             Header()
             .add("Authorization", f"Bearer {self.access_token}")
@@ -123,7 +124,7 @@ class MasterBlaster:
         -------
         Organisation
         """
-        r = await self._session.get(f"{BASE}/organization/{org_id}")
+        r = await self._session.get(f"{os.getenv('MB_BASE_URL')}/organization/{org_id}")
         match r.status:
             case 200:
                 return Organisation(self._session, **await r.json())
@@ -162,7 +163,7 @@ class MasterBlaster:
         -------
         organisations: List[Organisation]
         """
-        r = await self._session.get(f"{BASE}/organization/player")
+        r = await self._session.get(f"{os.getenv('MB_BASE_URL')}/organization/player")
         match r.status:
             case 200:
                 orgs = await r.json()
