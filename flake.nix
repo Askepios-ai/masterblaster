@@ -1,5 +1,5 @@
 {
-  description = "Masterblaser Flake";
+  description = "Masterblaster Flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -39,8 +39,7 @@
           TEAM_NAME = "";
         };
 
-        # A hook run every time you enter the environment
-        # Can load variables from `.env` file
+        # A hook run every time you enter the environment, can load variables from `.env` file
         shellHook = ''
           set -a; source .env; set +a
         '';
