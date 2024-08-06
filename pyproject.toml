@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "masterblaster.py"
-version = "0.1.0-rc.8"
+version = "0.1.0-rc.9"
 authors = ["Øyvind Nohr <oeyvindnohr@gmail.com>"]
 description = "Python API wrapper for masterblaster.gg"
 readme = "README.md"
