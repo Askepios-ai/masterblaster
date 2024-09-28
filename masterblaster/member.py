@@ -53,3 +53,28 @@ class Member:
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+
+class InternalMember:
+    """
+    Class for internal searchable members
+    Contains different information than player objects for organization/teams
+    """
+
+    def __init__(
+        self,
+        id: str,
+        objectId: str,
+        objectType: str,
+        objectName: str,
+        avatarUrl: str,
+        displayText: str,
+        searchableProperties: dict,
+    ) -> None:
+        self.id: str = id
+        self.object_id: str = objectId
+        self.object_type: str = objectType
+        self.object_name: str = objectName
+        self.avatar_url: str = avatarUrl
+        self.display_text: str = displayText
+        self.searchable_properties: dict = searchableProperties

@@ -4,6 +4,7 @@ import logging
 from .headers import Header
 from .organisation import Organisation
 from .member import Member
+from .team import Team
 from typing import Any, Optional
 
 
@@ -172,4 +173,103 @@ class MasterBlaster:
             case _:
                 raise Exception(
                     f"Unable to fetch organizations. code: {r.status} err: {await r.text()}"
+                )
+
+    async def search_org(self, org_name: str) -> Organisation:
+        """
+        Search for an organization by name
+
+        Parameters
+        ----------
+        org_name (str): The name of the organization
+
+        Returns
+        -------
+        Organisation: Organisation
+        """
+        r = await self._session.get(
+            f"{os.getenv('MB_BASE_URL')}/search2/search?objectType=organization&query={org_name}"
+        )
+        match r.status:
+            case 200:
+                # MB enforces unique names, no chance of multiple pages here
+                r = await r.json()
+                try:
+                    await self.get_org(r["data"][0]["id"])
+                except Exception:
+                    raise LookupError(f"Unable to find organization: {org_name}")
+            case _:
+                raise Exception(
+                    f"Unable to fetch organizations. code: {r.status} err: {await r.text()}"
+                )
+
+    async def search_team(self, team_name: str) -> Team:
+        """
+        Search for a team by name
+
+        Parameters
+        ----------
+        team_name (str): The name of the team
+
+        Returns
+        -------
+        Organisation: Organisation
+        """
+
+        async def get_team(self, team_id: int) -> Team | None:
+            r = await self._session.get(f"{os.getenv('MB_BASE_URL')}/Team/{team_id}")
+            match r.status:
+                case 200:
+                    return Team(self._session, **await r.json())
+                case _:
+                    raise Exception(
+                        f"Unable to fetch team: {team_id} code: {r.status} err: {await r.text()}"
+                    )
+
+        r = await self._session.get(
+            f"{os.getenv('MB_BASE_URL')}/search2/search?objectType=team&query={team_name}"
+        )
+        match r.status:
+            case 200:
+                # MB enforces unique names, no chance of multiple pages here
+                r = await r.json()
+                try:
+                    return await get_team(self, r["data"][0]["id"])
+                except Exception:
+                    raise
+
+            case _:
+                raise Exception(
+                    f"Unable to fetch teams. code: {r.status} err: {await r.text()}"
+                )
+
+    async def search_player(self, player_name: str) -> list[InternalMember]:
+        """
+        Search for a player by name
+
+        Parameters
+        ----------
+        player_name (str):
+            The name of the player
+
+        Returns
+        -------
+        Member: list[Member]
+            List of members with given name
+        """
+        r = await self._session.get(
+            f"{os.getenv('MB_BASE_URL')}/search2/search?objectType=player&query={player_name}"
+        )
+        match r.status:
+            case 200:
+                # MB enforces unique names, no chance of multiple pages here
+                r = await r.json()
+                try:
+                    return await get_player(self, r["data"][0]["id"])
+                except Exception:
+                    raise
+
+            case _:
+                raise Exception(
+                    f"Unable to fetch players. code: {r.status} err: {await r.text()}"
                 )
